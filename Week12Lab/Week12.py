@@ -10,7 +10,7 @@ fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((screen_width, screen_height))
 pygame.display.set_caption('Pong')
 
-font = pygame.font.SysFont('constantia', 30)
+font = pygame.font.SysFont('Rockwell', 30)
 
 margin = 50
 cpu_score = 0
