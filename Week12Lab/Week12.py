@@ -12,6 +12,7 @@ pygame.display.set_caption('Pong')
 
 font = pygame.font.SysFont('Rockwell', 30)
 
+live_ball = False
 margin = 50
 cpu_score = 0
 player_score = 0
@@ -42,24 +43,29 @@ class paddle():
         if key[pygame.K_DOWN] and self.rect.bottom < screen_height:
             self.rect.move_ip(0, self.speed)
 
+    def ai(self):
+        if self.rect.centery < pong.rect.top and self.rect.bottom < screen_height:
+            self.rect.move_ip(0, self.speed)
+
+        if self.rect.centery > pong.rect.top and self.rect.top > margin:
+            self.rect.move_ip(0, -1 * self.speed)
+
+
     def draw(self):
         pygame.draw.rect(screen, white, self.rect)
 
 class ball():
     def __init__(self, x, y):
-        self.x = x
-        self.y = y
-        self.ball_rad = 8
-        self.rect = Rect(self.x, self.y, self.ball_rad * 2, self.ball_rad * 2)
-        self.speed_x = -4
-        self.speed_y = 4
-        self.winner = 0
+        self.reset(x,y)
     def move(self):
 
        if self.rect.top < margin:
            self.speed_y *= -1
        if self.rect.bottom > screen_height:
            self.speed_y *= -1
+
+       if self.rect.colliderect(player_paddle) or self.rect.colliderect(cpu_paddle):
+            self.speed_x *= -1
 
        if self.rect.left < 0:
            self.winner = 1
@@ -74,6 +80,15 @@ class ball():
 
     def draw(self):
         pygame.draw.circle(screen, white, (self.rect.x + self.ball_rad, self.rect.y + self.ball_rad), self.ball_rad)
+
+    def reset(self, x, y):
+        self.x = x
+        self.y = y
+        self.ball_rad = 8
+        self.rect = Rect(self.x, self.y, self.ball_rad * 2, self.ball_rad * 2)
+        self.speed_x = -4
+        self.speed_y = 4
+        self.winner = 0
 
 
 player_paddle = paddle(screen_width - 40, screen_height // 2)
@@ -93,16 +108,30 @@ while run:
     player_paddle.draw()
     cpu_paddle.draw()
 
-    pong.draw()
+    if live_ball == True:
 
-    player_paddle.move()
+        winner = pong.move()
+        if winner == 0:
+            player_paddle.move()
+            cpu_paddle.ai()
 
-    winner = pong.move()
-    print(winner)
+            pong.draw()
+        else:
+            live_ball = False
+            if winner == 1:
+                player_score += 1
+            elif winner == -1:
+                cpu_score += 1
+
+
+
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.MOUSEBUTTONDOWN and live_ball == False:
+            live_ball = True
+            pong.reset(screen_width - 60, screen_height // 2 + 50)
 
     pygame.display.update()
 
