@@ -3,12 +3,12 @@ from pygame.locals import *
 
 pygame.init()
 
-screen_width = 600
-screen_height = 500
+screen_width = 900
+screen_height = 700
 
 fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Pong')
+pygame.display.set_caption('Ping Pong')
 
 font = pygame.font.SysFont('Rockwell', 30)
 
@@ -122,8 +122,6 @@ while run:
                 player_score += 1
             elif winner == -1:
                 cpu_score += 1
-
-
 
 
     for event in pygame.event.get():
