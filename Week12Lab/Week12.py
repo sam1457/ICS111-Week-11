@@ -123,6 +123,9 @@ while run:
             elif winner == -1:
                 cpu_score += 1
 
+    if live_ball == False:
+      if winner == 0:
+        draw_text('Click Anywhere To Start', font, white, 260, screen_height // 2 - 100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
