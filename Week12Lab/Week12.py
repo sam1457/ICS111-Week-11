@@ -3,8 +3,8 @@ from pygame.locals import *
 
 pygame.init()
 
-screen_width = 900
-screen_height = 700
+screen_width = 750
+screen_height = 600
 
 fpsClock = pygame.time.Clock()
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -18,6 +18,8 @@ cpu_score = 0
 player_score = 0
 fps = 60
 winner = 0
+speed_increase = 0
+
 
 bg = (90, 10, 10)
 white = (10, 10, 10)
@@ -104,12 +106,13 @@ while run:
     draw_board()
     draw_text('CPU: ' + str(cpu_score), font, white, 20, 15)
     draw_text('P1: ' + str(player_score), font, white, screen_width -100, 15)
+    draw_text('Ball Speed:' + str(abs(pong.speed_x)), font, white, screen_width // 2 - 100, 15)
 
     player_paddle.draw()
     cpu_paddle.draw()
 
     if live_ball == True:
-
+        speed_increase += 1
         winner = pong.move()
         if winner == 0:
             player_paddle.move()
@@ -125,14 +128,25 @@ while run:
 
     if live_ball == False:
       if winner == 0:
-        draw_text('Click Anywhere To Start', font, white, 260, screen_height // 2 - 100)
+        draw_text('Click Any Button To Start', font, white, 200, screen_height // 2 - 100)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-        if event.type == pygame.MOUSEBUTTONDOWN and live_ball == False:
+        if event.type == pygame.KEYDOWN and live_ball == False:
             live_ball = True
-            pong.reset(screen_width - 60, screen_height // 2 + 50)
+            pong.reset(screen_width - 60, screen_height //  2 + 50)
+
+    if speed_increase > 500:
+        speed_increase = 0
+        if pong.speed_x < 0:
+            pong.speed_x -= 1
+        if pong.speed_x > 0:
+            pong.speed_x += 1
+        if pong.speed_x < 0:
+           pong.speed_x -= 1
+        if pong.speed_x > 0:
+            pong.speed_x += 1
 
     pygame.display.update()
 
