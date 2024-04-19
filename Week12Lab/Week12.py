@@ -22,7 +22,7 @@ speed_increase = 0
 
 
 bg = (90, 10, 10)
-white = (10, 10, 10)
+white = (12, 12, 50)
 
 def draw_board():
     screen.fill(bg)
@@ -122,9 +122,9 @@ while run:
         else:
             live_ball = False
             if winner == 1:
-                player_score += 1
+                player_score += 2
             elif winner == -1:
-                cpu_score += 1
+                cpu_score += 2
 
     if live_ball == False:
       if winner == 0:
