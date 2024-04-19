@@ -143,10 +143,6 @@ while run:
             pong.speed_x -= 1
         if pong.speed_x > 0:
             pong.speed_x += 1
-        if pong.speed_x < 0:
-           pong.speed_x -= 1
-        if pong.speed_x > 0:
-            pong.speed_x += 1
 
     pygame.display.update()
 
